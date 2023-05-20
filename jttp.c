@@ -15,6 +15,30 @@ const int PORT = 8080; // Port to listen on
 //char* hello = "Ray's server says hello!"; // for debugging purposes
 char *hello = ("HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 25\n\n Ray's server says hello!");
 
+#define RESPONSE_HEADER "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n"
+#define HTML_FILE_PATH "index.html"
+
+int respondWithHTML(int clientSocket) {
+    FILE *htmlFile = fopen(HTML_FILE_PATH, "r");
+    if (htmlFile == NULL) {
+        printf("Failed to open HTML file.\n");
+        return 0;
+    }
+
+    char responseBuffer[1024];
+    size_t bytesRead;
+
+    // Send the response header
+    write(clientSocket, RESPONSE_HEADER, strlen(RESPONSE_HEADER));
+
+    // Read and send the HTML file contents
+    while ((bytesRead = fread(responseBuffer, 1, sizeof(responseBuffer), htmlFile)) > 0) {
+        write(clientSocket, responseBuffer, bytesRead);
+    }
+
+    fclose(htmlFile);
+    return 1;
+}
 
 int main(int argc, char *argv[]) {
 
@@ -63,9 +87,17 @@ int main(int argc, char *argv[]) {
         long valread = read(client_fd, buffer, buffsiz);
         printf("Received %ld bytes\n", valread);
         printf("Message: %s\n", buffer);
+
+        // Respond with HTML
+        if(respondWithHTML(client_fd) == 1) {
+            printf("***** HTML sent *****\n");
+        }
+        else{printf("***** Failed to send HTML *****\n");}
+        /*
         if(write(client_fd, hello, strlen(hello))){ // Send a message back to the client
             printf("***** Message sent *****\n");
         }
+        */
         close(client_fd); //all good things must end, close the connection
     }
     return 0;
