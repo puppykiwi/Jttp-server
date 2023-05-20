@@ -12,7 +12,8 @@
 
 const int buffsiz = 690000; // ~69KB, nice :)
 const int PORT = 8080; // Port to listen on
-const char* hello = "Ray's server says hello!";
+//char* hello = "Ray's server says hello!"; // for debugging purposes
+char *hello = ("HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 25\n\n Ray's server says hello!");
 
 
 int main(int argc, char *argv[]) {
