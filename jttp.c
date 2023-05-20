@@ -16,7 +16,7 @@ const int PORT = 8080; // Port to listen on
 char *hello = ("HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 25\n\n Ray's server says hello!");
 
 #define RESPONSE_HEADER "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n"
-#define HTML_FILE_PATH "index.html"
+#define HTML_FILE_PATH "assetsindex.html"
 
 int respondWithHTML(int clientSocket) {
     FILE *htmlFile = fopen(HTML_FILE_PATH, "r");
