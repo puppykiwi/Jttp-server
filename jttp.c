@@ -1,22 +1,4 @@
-// Author: Johnray Mwendwa
-// Johnray's Tiny Transfer Protocol (JTTP) server v0.1
-
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-
-const int buffsiz = 690000; // ~69KB, nice :)
-const int PORT = 8080; // Port to listen on
-//char* hello = "Ray's server says hello!"; // for debugging purposes
-char *hello = ("HTTP/1.1 200 OK\nContent-Type: text/plain\nContent-Length: 25\n\n Ray's server says hello!");
-
-#define RESPONSE_HEADER "HTTP/1.1 200 OK\r\nContent-Type: text/html\r\n\r\n"
-#define HTML_FILE_PATH "assets/index.html"
+#include "jttp.h"
 
 int respondWithHTML(int clientSocket) {
     FILE *htmlFile = fopen(HTML_FILE_PATH, "r");
@@ -41,6 +23,7 @@ int respondWithHTML(int clientSocket) {
 }
 
 int main(int argc, char *argv[]) {
+    const int PORT = 8080; // Port to listen on
 
     struct sockaddr_in address;
     int addrlen = sizeof(address);
@@ -67,38 +50,28 @@ int main(int argc, char *argv[]) {
     // Listen for connections
     const int backlog = 10; // this is the max no of connections to hold in queue
     int listen_result = listen(server_fd, backlog);
-    if (listen_result < 0){
+    if (listen_result < 0) {
         perror("Could not listen on socket ");
         exit(EXIT_FAILURE);
     }
 
     // Accept a connection
-    while(1){
+    while (1) {
         printf("\n***** Waiting for a new connection *****\n\n");
-        int client_fd = accept(server_fd, (struct sockaddr *)&address, (socklen_t*)&addrlen);
+        int client_fd = accept(server_fd, (struct sockaddr *)&address, (socklen_t *)&addrlen);
         if (client_fd < 0) {
             perror("Could not accept connection");
             exit(EXIT_FAILURE);
         }
 
-        // Read from the socket
-        char buffer[buffsiz];
-        memset(buffer, 0, buffsiz);
-        long valread = read(client_fd, buffer, buffsiz);
-        printf("Received %ld bytes\n", valread);
-        printf("Message: %s\n", buffer);
-
         // Respond with HTML
-        if(respondWithHTML(client_fd) == 1) {
+        if (respondWithHTML(client_fd) == 1) {
             printf("***** HTML sent *****\n");
+        } else {
+            printf("***** Failed to send HTML *****\n");
         }
-        else{printf("***** Failed to send HTML *****\n");}
-        /*
-        if(write(client_fd, hello, strlen(hello))){ // Send a message back to the client
-            printf("***** Message sent *****\n");
-        }
-        */
-        close(client_fd); //all good things must end, close the connection
+
+        close(client_fd); // Close the connection
     }
     return 0;
 }
