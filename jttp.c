@@ -1,4 +1,4 @@
-#include "jttp.h"
+#include "include/jttp.h"
 
 int respondWithHTML(int clientSocket) {
     FILE *htmlFile = fopen(HTML_FILE_PATH, "r");
