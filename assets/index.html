@@ -1,21 +1,38 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <style>
-        .flashing {
-            animation: flash 1s infinite;
-        }
+  <title></title>
+  <style>
+    body {
+      background-color: #472151;
+      color: #ffa345;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
 
-        @keyframes flash {
-            0% { background-color: purple; }
-            50% { background-color: orange; }
-            100% { background-color: purple; }
-        }
-    </style>
+    #text {
+      font-size: 24px;
+      font-weight: bold;
+      font-style: italic;
+      margin-top: 30vh;
+    }
+  </style>
+  <script>
+    // Array of colors to be used
+    var colors = [#ffa345];
+
+    // Function to change the text color randomly
+    function changeColor() {
+      var text = document.getElementById('text');
+      var randomColor = colors[Math.floor(Math.random() * colors.length)];
+      text.style.color = randomColor;
+    }
+
+    // Function to change the color every 1.5 seconds
+    setInterval(changeColor, 1500);
+  </script>
 </head>
 <body>
-    <div class="flashing">
-        <img src="frog_with_pickaxe.png" alt="Frog with Pickaxe">
-    </div>
+  <div id="text">Ah, misere!</div>
 </body>
 </html>
