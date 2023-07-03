@@ -1,38 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Changing Colors</title>
-  <style>
-    body {
-      background-color: #000;
-      color: #fff;
-      font-family: Arial, sans-serif;
-      text-align: center;
-    }
+    <style>
+        .flashing {
+            animation: flash 1s infinite;
+        }
 
-    #text {
-      font-size: 24px;
-      font-weight: bold;
-      font-style: italic;
-      margin-top: 30vh;
-    }
-  </style>
-  <script>
-    // Array of colors to be used
-    var colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff'];
-
-    // Function to change the text color randomly
-    function changeColor() {
-      var text = document.getElementById('text');
-      var randomColor = colors[Math.floor(Math.random() * colors.length)];
-      text.style.color = randomColor;
-    }
-
-    // Function to change the color every 1.5 seconds
-    setInterval(changeColor, 1500);
-  </script>
+        @keyframes flash {
+            0% { background-color: purple; }
+            50% { background-color: orange; }
+            100% { background-color: purple; }
+        }
+    </style>
 </head>
 <body>
-  <div id="text">Fear mwendwa, ye wretched mortals!</div>
+    <div class="flashing">
+        <img src="frog_with_pickaxe.png" alt="Frog with Pickaxe">
+    </div>
 </body>
 </html>
