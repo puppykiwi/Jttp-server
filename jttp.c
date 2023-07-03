@@ -23,7 +23,7 @@ int respondWithHTML(int clientSocket) {
 }
 
 int main(int argc, char *argv[]) {
-    const int PORT = 8080; // Port to listen on
+    const int PORT = 80; // Port to listen on
 
     struct sockaddr_in address;
     int addrlen = sizeof(address);
